@@ -2,7 +2,6 @@ import torch
 from torch import nn
 from torch import optim
 
-
 import numpy as np
 
 import os
@@ -10,19 +9,19 @@ import sys
 import time
 import optparse
 
-
 import utils
 import config
 from data import Dataset
 from model import PerformanceRNN
 from sequence import NoteSeq, EventSeq, ControlSeq
 
+
 # pylint: disable=E1102
 # pylint: disable=E1101
 
-#========================================================================
+# ========================================================================
 # Settings
-#========================================================================
+# ========================================================================
 
 def get_options():
     parser = optparse.OptionParser()
@@ -81,12 +80,12 @@ def get_options():
                       dest='model_params',
                       type='string',
                       default='')
-                      
+
     parser.add_option('-r', '--reset-optimizer',
                       dest='reset_optimizer',
                       action='store_true',
                       default=False)
-                      
+
     parser.add_option('-L', '--enable-logging',
                       dest='enable_logging',
                       action='store_true',
@@ -94,9 +93,10 @@ def get_options():
 
     return parser.parse_args()[0]
 
+
 options = get_options()
 
-#------------------------------------------------------------------------
+# ------------------------------------------------------------------------
 
 sess_path = options.sess_path
 data_path = options.data_path
@@ -140,9 +140,9 @@ print('Device:', device)
 print('-' * 70)
 
 
-#========================================================================
+# ========================================================================
 # Load session and dataset
-#========================================================================
+# ========================================================================
 
 def load_session():
     global sess_path, model_config, device, learning_rate, reset_optimizer
@@ -167,6 +167,7 @@ def load_session():
             optimizer.load_state_dict(optimizer_state)
     return model, optimizer
 
+
 def load_dataset():
     global data_path
     dataset = Dataset(data_path, verbose=True)
@@ -187,7 +188,8 @@ print(dataset)
 
 print('-' * 70)
 
-#------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------
 
 def save_model():
     global model, optimizer, model_config, sess_path
@@ -198,13 +200,14 @@ def save_model():
     print('Done saving')
 
 
-#========================================================================
+# ========================================================================
 # Training
-#========================================================================
+# ========================================================================
 
 if enable_logging:
     # from tensorboardX import SummaryWriter
     from torch.utils.tensorboard import SummaryWriter
+
     writer = SummaryWriter(log_dir=os.path.dirname(options.sess_path))
 
 last_saving_time = time.time()
@@ -238,7 +241,7 @@ try:
 
         norm = utils.compute_gradient_norm(model.parameters())
         nn.utils.clip_grad_norm_(model.parameters(), 1.0)
-        
+
         optimizer.step()
 
         if enable_logging:
