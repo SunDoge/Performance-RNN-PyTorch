@@ -6,3 +6,5 @@
 *.sess
 *.data
 runs/
+
+.idea/

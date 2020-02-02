@@ -1,7 +1,7 @@
 import torch
 from torch import nn
 from torch import optim
-from torch.autograd import Variable
+
 
 import numpy as np
 
@@ -203,8 +203,9 @@ def save_model():
 #========================================================================
 
 if enable_logging:
-    from tensorboardX import SummaryWriter
-    writer = SummaryWriter()
+    # from tensorboardX import SummaryWriter
+    from torch.utils.tensorboard import SummaryWriter
+    writer = SummaryWriter(log_dir=os.path.dirname(options.sess_path))
 
 last_saving_time = time.time()
 loss_function = nn.CrossEntropyLoss()
